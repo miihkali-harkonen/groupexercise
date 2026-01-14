@@ -32,9 +32,11 @@ WITH order_totals AS (
   JOIN customers ON orders.customer_id = customers.customer_id
   GROUP BY orders.order_id, customers.cust_name
 )
-SELECT order_id, cust_name, total_items
+SELECT order_id, cust_name AS customer_name, total_items
 FROM order_totals
 WHERE total_items = (SELECT MAX(total_items) FROM order_totals);
+
+
 
 
 
