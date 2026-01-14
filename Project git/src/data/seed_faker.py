@@ -79,6 +79,7 @@ def seed_database(
         product_rows = cur.fetchall()
         product_ids = [r[0] for r in product_rows]
         product_price_map = {r[0]: float(r[1]) for r in product_rows}
+        
 
         # --- 3) Customers (large insert -> NO RETURNING; SELECT back) ---
         customers = []
