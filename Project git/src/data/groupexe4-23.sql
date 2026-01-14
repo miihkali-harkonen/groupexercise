@@ -1,9 +1,3 @@
-select 
-	AVG(price_at_purchase * quantity) AS average_order_value
-FROM order_items;
-
-
-
 SELECT
 	DATE_TRUNC('month', orders.order_date)::DATE as month,
 	COUNT(orders.order_id) AS total_orders,

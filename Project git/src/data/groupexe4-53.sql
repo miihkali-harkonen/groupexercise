@@ -1,5 +1,4 @@
 WITH product_sales AS (
-    -- Step 1: Calculate total sales for every individual product
     SELECT 
         product_id,
         SUM(quantity * price_at_purchase) AS product_revenue,

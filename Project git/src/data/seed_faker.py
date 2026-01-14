@@ -74,10 +74,13 @@ def seed_database(
             RETURNING product_id, price;
             """,
             products,
+            page_size=num_products,
         )
 
         product_rows = cur.fetchall()
         product_ids = [r[0] for r in product_rows]
+        #Making sure some products will not have any orders linked
+        product_ids = random.sample(product_ids, 190)
         product_price_map = {r[0]: float(r[1]) for r in product_rows}
 
         # --- 3) Customers (large insert -> NO RETURNING; SELECT back) ---
@@ -122,7 +125,8 @@ def seed_database(
         order_items = []
         for (order_id, _order_date) in order_rows:
             items_count = random.randint(1, max_items_per_order)
-            chosen_products = random.sample(product_ids, k=min(items_count, len(product_ids)))
+
+            chosen_products = random.sample(product_ids, k=min(items_count, (len(product_ids))))
 
             for pid in chosen_products:
                 qty = random.randint(1, 10)
