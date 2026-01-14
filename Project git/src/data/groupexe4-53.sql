@@ -9,3 +9,5 @@ WITH product_sales AS (
 SELECT 
     ROUND((SUM(product_revenue) FILTER (WHERE sales_rank <= 0.10) / SUM(product_revenue)),3) * 100 AS percentage_contribution
 FROM product_sales;
+
+
