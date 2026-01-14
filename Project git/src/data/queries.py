@@ -52,7 +52,35 @@ def avg_order_value():
             cur.close()
         if conn is not None:
             conn.close()
+
+def peak_order_days_over_time():
+    conn = connect()
+    if conn == None:
+        return
+    try:
+        cur = conn.cursor()
+        cur.execute("""SELECT order_date, COUNT(*) AS daily_order
+                    FROM orders
+                    WHERE order_status <> 'cancelled'
+                    GROUP BY order_date
+                    ORDER BY daily_order DESC
+                    LIMIT 10;
+                    """)
+        top_orders = cur.fetchall()
+        print("The top 10 peak days are as follow:")
+        for order in top_orders:
+            print(f"{order[1]} orders have been made on {order[0]}")
+        
+    except (Exception, psycopg2.DatabaseError) as error:
+        print(error)
+    finally:
+        if cur is not None:
+            cur.close()
+        if conn is not None:
+            conn.close()
+
         
 if __name__ == "__main__":
     count_low_stock_products()
     avg_order_value()
+    peak_order_days_over_time()
