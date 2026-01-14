@@ -38,3 +38,36 @@ GROUP BY
     suppliers.name
 ORDER BY
     number_of_products DESC;
+
+SELECT
+    product_id
+FROM
+    products
+WHERE
+    product_id NOT IN
+    (
+    SELECT
+        products.product_id
+    FROM
+        products
+    JOIN
+        order_items ON order_items.product_id = products.product_id
+    GROUP BY
+        products.product_id
+    ORDER BY
+        products.product_id
+    );
+
+SELECT product_id FROM products
+
+SELECT
+    products.product_id,
+    sum(order_items.quantity)
+FROM
+    products
+JOIN
+    order_items ON order_items.product_id = products.product_id
+GROUP BY
+    products.product_id
+ORDER BY
+    products.product_id;
