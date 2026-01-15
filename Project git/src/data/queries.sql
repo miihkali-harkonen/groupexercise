@@ -31,6 +31,7 @@ JOIN shipments ON orders.order_id = shipments.order_id
 GROUP BY month
 ORDER BY month DESC;
 
+
 -- 5.3 Percentage of total sales attributed to the top 10% of products by sales.
 
 WITH product_sales AS (
@@ -38,19 +39,18 @@ WITH product_sales AS (
         product_id,
         SUM(quantity * price_at_purchase) AS product_revenue,
         PERCENT_RANK() OVER (
-			ORDER BY SUM(quantity * price_at_purchase) DESC
-			) AS sales_rank
+            ORDER BY SUM(quantity * price_at_purchase) DESC
+        ) AS sales_rank
     FROM order_items
     GROUP BY product_id
 )
-SELECT 
+SELECT
     ROUND(
-		(SUM(product_revenue) FILTER (WHERE sales_rank <= 0.10) / 
-		NULLIF(SUM(product_revenue)), 3)
-		) * 100 AS percentage_contribution
+        SUM(product_revenue) FILTER (WHERE sales_rank <= 0.10) / 
+        SUM(product_revenue), 3) * 100 AS percentage_contribution
 FROM product_sales;
 
--- visualization of 5.3
+-- visualization of top product sales 5.3
     SELECT 
         product_id,
         SUM(quantity * price_at_purchase) AS product_revenue,
@@ -59,3 +59,23 @@ FROM product_sales;
 			) AS sales_rank
     FROM order_items
     GROUP BY product_id
+
+-- check 5.3
+WITH product_sales AS (
+    SELECT 
+        product_id,
+        SUM(quantity * price_at_purchase) AS product_revenue,
+        PERCENT_RANK() OVER (
+            ORDER BY SUM(quantity * price_at_purchase) DESC
+        ) AS sales_rank
+    FROM order_items
+    GROUP BY product_id
+)
+SELECT
+    SUM(product_revenue) FILTER (
+        WHERE sales_rank <= 0.10) AS top_10_percent_revenue,
+    SUM(product_revenue) AS total_revenue,
+    ROUND(
+        SUM(product_revenue) FILTER (WHERE sales_rank <= 0.10) / 
+        SUM(product_revenue), 3) * 100 AS percentage_contribution
+FROM product_sales;

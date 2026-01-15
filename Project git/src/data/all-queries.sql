@@ -24,7 +24,7 @@ FROM
 JOIN order_items ON order_items.product_id = products.product_id 
 GROUP BY
 	products.category
-ORDER BY total_sales DESC
+ORDER BY total_sales DESC;
 
 
 -- 2.2. Average order value.
@@ -206,13 +206,13 @@ WITH product_sales AS (
     FROM order_items
     GROUP BY product_id
 )
-SELECT 
+SELECT
     ROUND(
         SUM(product_revenue) FILTER (WHERE sales_rank <= 0.10) / 
         SUM(product_revenue), 3) * 100 AS percentage_contribution
 FROM product_sales;
 
--- visualization of 5.3
+-- visualization of top product sales CTE 5.3
     SELECT 
         product_id,
         SUM(quantity * price_at_purchase) AS product_revenue,
@@ -220,4 +220,5 @@ FROM product_sales;
 			ORDER BY SUM(quantity * price_at_purchase) DESC
 			) AS sales_rank
     FROM order_items
-    GROUP BY product_id
+    GROUP BY product_id;
+
