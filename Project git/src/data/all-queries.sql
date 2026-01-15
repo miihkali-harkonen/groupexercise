@@ -10,7 +10,7 @@ FROM orders;
 SELECT SUM(quantity * price_at_purchase) AS Total_sales
 FROM order_items;
 
--- 1.3. Count of products with low stock (e.g.,stock_quantity < 10)
+-- 1.3. Count of products with low stock (e.g.,stock_quantity < 10).
 SELECT COUNT(*) AS low_stock_products
 FROM products
 WHERE stock_quantity < 10;
