@@ -9,7 +9,7 @@ FROM
 JOIN order_items ON order_items.product_id = products.product_id 
 GROUP BY
 	products.category
-ORDER BY total_sales DESC
+ORDER BY total_sales DESC;
 
 -- 2.3 Monthly breakdown of the number of orders 
 and total sales
@@ -58,7 +58,7 @@ FROM product_sales;
 			ORDER BY SUM(quantity * price_at_purchase) DESC
 			) AS sales_rank
     FROM order_items
-    GROUP BY product_id
+    GROUP BY product_id;
 
 -- check 5.3
 WITH product_sales AS (
